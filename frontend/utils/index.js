@@ -29,20 +29,81 @@ const closeReadBtn = document.getElementById("close-read-btn");
 // LOGIN / REGISTER
 // -----------------
 
+// login logic
 document.getElementById("login-btn").addEventListener("click", async () => {
-  const username = document.getElementById("username").value.trim();
+  const username = document.getElementById("lgn-username").value.trim();
+  const password = document.getElementById("lgn-password").value.trim();
   if (!username) return alert("Enter a username");
+  if (!password) return alert("Enter a password");
 
-  // call backend to add user
-  await fetch("http://localhost:3000/api/users", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username }),
-  });
+  // call backend to get users
+  try {
+    const res = await fetch("http://localhost:3000/api/users", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
+    let data;
+    data = await res.json();
+
+    // check if user exists and password matches
+    console.log("Users response:", data);
+    const user = data.find((u) => u.username === username && u.password === password);
+    if (!user) {
+      return alert("Incorrect username or password");
+    }
+    else if (password !== user.password) {
+      return alert("Incorrect username or password");
+    }
+    else 
+      console.log("Login successful");
+
+  } catch (err) {
+    console.error("Failed to fetch users:", err);
+  }
+
+  // successful login
   currentUser = username;
   localStorage.setItem("currentUser", currentUser); // optional for page refresh
   showLibrary();
+});
+
+// register logic
+document.getElementById("register-btn").addEventListener("click", async () => {
+  const username = document.getElementById("reg-username").value.trim();
+  const password = document.getElementById("reg-password").value.trim();
+  if (!username) return alert("Enter a username");
+  if (!password) return alert("Enter a password");
+
+  try {
+    const res = await fetch("http://localhost:3000/api/users", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    let checkData;
+    checkData = await res.json();
+    
+    // check if user already exists
+    const existingUser = checkData.find((u) => u.username === username);
+    if (existingUser) {
+      return alert("Username already taken");
+    }
+    else 
+      console.log("Username available");
+
+    // call backend to add user
+    await fetch("http://localhost:3000/api/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+
+    showLogin()
+    
+  } catch (err) {
+    console.error("Failed to retrieve and check users:", err);
+  }
 });
 
 document.getElementById("register-nav").addEventListener("click", () => {

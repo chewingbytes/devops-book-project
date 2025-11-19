@@ -11,14 +11,26 @@ router.get("/", (req, res) => {
 
 // Add new user
 router.post("/", (req, res) => {
-  const { username } = req.body;
-  if (!username) return res.status(400).json({ error: "Username required" });
+  const { username, password } = req.body || {};
+  if (typeof username !== "string" || username.trim() === "")
+    return res.status(400).json({ error: "Username required" });
+  if (typeof password !== "string" || password.trim() === "")
+    return res.status(400).json({ error: "Password required" });
+
+  console.log(password)
 
   const data = readData();
-  if (!data.users.includes(username)) data.users.push(username);
+  const existing = data.users.find(user => user.username === username || user === username);
 
+  if (existing) {
+    return res.json({ success: false, created: false, error: "Username already taken" });
+  }
+
+  const newUser = { username: username.trim(), password: password.trim() };
+  data.users.push(newUser);
   writeData(data);
-  res.json({ success: true });
+
+  res.json({ success: true, created: true, user: { username: newUser.username } });
 });
 
 export default router;

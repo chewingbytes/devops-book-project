@@ -1,9 +1,9 @@
 {
   "users": [
-    "bryan",
-    "brya",
-    "minsorjon",
-    "mamamia"
+    {
+      "username": "test",
+      "password": "test"
+    }
   ],
   "books": [
     {
