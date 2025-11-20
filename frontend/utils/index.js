@@ -175,8 +175,8 @@ async function showLibrary() {
   renderBooks();
 }
 
-/* async function fetchBooks() {
-  const res = await fetch(`http://localhost:3000/api/books/${currentUser}`);
+ async function fetchBooks() {
+  const res = await fetch(`http://localhost:3000/api/books`);
   books = await res.json();
 }
 
@@ -200,6 +200,8 @@ function renderBooks() {
   });
 }
 
+
+/*
 // -----------------
 // ADD / EDIT BOOK
 // -----------------
@@ -248,7 +250,7 @@ window.editBook = (index) => {
   bookAuthorInput.value = book.author;
   bookContentInput.value = book.content;
   bookModal.classList.remove("hidden");
-};
+}; */
 
 // -----------------
 // DELETE BOOK
@@ -283,4 +285,4 @@ closeReadBtn.addEventListener("click", () => readModal.classList.add("hidden"));
 // -----------------
 currentUser = localStorage.getItem("currentUser") || null;
 if (currentUser) showLibrary();
-else showLogin(); */
+else showLogin(); 
