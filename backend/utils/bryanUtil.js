@@ -3,14 +3,12 @@ import { readData, writeData } from "../utils/data.js";
 
 const router = express.Router();
 
-// Get all books for a user
 router.get("/:user", (req, res) => {
   const data = readData();
   const userBooks = data.books.filter(b => b.user === req.params.user);
   res.json(userBooks);
 });
 
-// Add or update book
 router.post("/", (req, res) => {
   const { user, title, author, content, editIndex } = req.body;
 
