@@ -22,7 +22,7 @@ function registerDeleteAttempt() {
   deleteTimestamps.push(now);
   deleteTimestamps = deleteTimestamps.filter(t => now - t <= 10000);
 
-  // if 5 successful deletes in 10s, lock the delete button for 25s
+  // if 4 successful deletes in 10s, 5th attempt will lock the delete button for 25s
   if (deleteTimestamps.length >= 4 && !locked) {
     locked = true;
     setTimeout(() => {
@@ -50,7 +50,7 @@ async function readBooksFile() {
   }
 }
 
-// write books to JSON file
+// write updated books to JSON file
 async function writeBooksFile(data) {
   await fs.writeFile(BOOK_FILE, JSON.stringify(data, null, 2), 'utf8');
 }
